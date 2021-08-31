@@ -887,7 +887,7 @@ class Stopwatch:
         dialog.destroy()
 
     def set_mode(self, mode=None):
-        if mode == None:
+        if mode is None:
             mode = self.mode
         elif mode != self.mode and 0 <= mode < self.MODES:
             self.mode = mode
@@ -902,7 +902,7 @@ class Stopwatch:
         self.set_mode()
 
     def show(self, whatever=None):
-        if self.colorseldlg == None:
+        if self.colorseldlg is None:
             self.colorseldlg = Gtk.ColorSelectionDialog()
         response = self.colorseldlg.run()
         self.colorseldlg.hide()
