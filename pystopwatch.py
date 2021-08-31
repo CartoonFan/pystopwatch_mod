@@ -26,36 +26,42 @@ import re
 from string import capwords
 
 import gi
-gi.require_version('Gtk', '3.0')
-#from gtk import EXPAND,FILL,STOCK_GO_UP,STOCK_GO_DOWN
-#import gobject
+
+gi.require_version("Gtk", "3.0")
+# from gtk import EXPAND,FILL,STOCK_GO_UP,STOCK_GO_DOWN
+# import gobject
 
 
 def get_conf_dir(name):
-    fpath = os.getenv('XDG_CONFIG_HOME')
+    fpath = os.getenv("XDG_CONFIG_HOME")
     if not fpath:
-        fpath = os.path.join(os.getenv('HOME'), '.config')
+        fpath = os.path.join(os.getenv("HOME"), ".config")
         sys.stderr.write(
-            "error: the environment variable \"XDG_CONFIG_HOME\" is not set\nDefaulting to " + fpath + "\n")
+            'error: the environment variable "XDG_CONFIG_HOME" is not set\nDefaulting to '
+            + fpath
+            + "\n"
+        )
     return os.path.join(fpath, name)
 
 
 def get_cache_dir(name):
-    fpath = os.getenv('XDG_CACHE_HOME')
+    fpath = os.getenv("XDG_CACHE_HOME")
     if not fpath:
-        fpath = os.path.join(os.getenv('HOME'), '.cache')
+        fpath = os.path.join(os.getenv("HOME"), ".cache")
         sys.stderr.write(
-            "error: the environment variable \"XDG_CACHE_HOME\" is not set\nDefaulting to " + fpath + "\n")
+            'error: the environment variable "XDG_CACHE_HOME" is not set\nDefaulting to '
+            + fpath
+            + "\n"
+        )
     return os.path.join(fpath, name)
 
 
 class StockImgButton(Gtk.Button):
     def __init__(self, **args):
         GObject.GObject.__init__(self)
-        self.alignment = Gtk.Alignment.new(
-            xalign=0.5, yalign=0.5, xscale=0, yscale=0)
+        self.alignment = Gtk.Alignment.new(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         self.img = Gtk.Image()
-        self.img.set_from_stock(args['icon'], Gtk.IconSize.MENU)
+        self.img.set_from_stock(args["icon"], Gtk.IconSize.MENU)
 
         self.alignment.add(self.img)
         self.add(self.alignment)
@@ -68,30 +74,30 @@ class StockImgButton(Gtk.Button):
 
 class ToggleStockImgButton(StockImgButton):
     def __init__(self, **args):
-        self.on_icon = args['on_icon']
-        self.off_icon = args['off_icon']
+        self.on_icon = args["on_icon"]
+        self.off_icon = args["off_icon"]
 
-        if 'on' in args:
+        if "on" in args:
             self.is_on = True
         else:
             self.is_on = False
 
-        if 'turn_on_cmd' in args:
-            self.turn_on_cmd = args['turn_on_cmd']
+        if "turn_on_cmd" in args:
+            self.turn_on_cmd = args["turn_on_cmd"]
         else:
             self.turn_on_cmd = None
 
-        if 'turn_off_cmd' in args:
-            self.turn_off_cmd = args['turn_off_cmd']
+        if "turn_off_cmd" in args:
+            self.turn_off_cmd = args["turn_off_cmd"]
         else:
             self.turn_off_cmd = None
 
         if self.is_on:
             StockImgButton.__init__(self, icon=self.on_icon)
-            self.cmd_id = self.connect('clicked', self.turn_off_cmd)
+            self.cmd_id = self.connect("clicked", self.turn_off_cmd)
         else:
             StockImgButton.__init__(self, icon=self.off_icon)
-            self.cmd_id = self.connect('clicked', self.turn_on_cmd)
+            self.cmd_id = self.connect("clicked", self.turn_on_cmd)
 
     def turn_on(self):
         if not self.is_on:
@@ -105,37 +111,37 @@ class ToggleStockImgButton(StockImgButton):
         self.disconnect(self.cmd_id)
         if self.is_on:
             self.change_icon(self.off_icon)
-            self.cmd_id = self.connect('clicked', self.turn_on_cmd)
+            self.cmd_id = self.connect("clicked", self.turn_on_cmd)
             self.is_on = False
         else:
             self.change_icon(self.on_icon)
-            self.cmd_id = self.connect('clicked', self.turn_off_cmd)
+            self.cmd_id = self.connect("clicked", self.turn_off_cmd)
             self.is_on = True
 
 
 class TimeFieldAdjuster(Gtk.Frame):
     def __init__(self, **args):
-        if 'font' in args:
-            self.font = args['font']
-            del args['font']
+        if "font" in args:
+            self.font = args["font"]
+            del args["font"]
         else:
-            self.font = Pango.FontDescription('monospace 10')
+            self.font = Pango.FontDescription("monospace 10")
 
-        if 'interval' in args:
-            self.interval = args['interval']
-            del args['interval']
+        if "interval" in args:
+            self.interval = args["interval"]
+            del args["interval"]
         else:
             self.interval = 60
 
-        if 'callback' in args:
-            self.callback = args['callback']
-            del args['callback']
+        if "callback" in args:
+            self.callback = args["callback"]
+            del args["callback"]
         else:
             self.callback = None
 
-        if 'label' in args:
-            self.label = args['label']
-            del args['label']
+        if "label" in args:
+            self.label = args["label"]
+            del args["label"]
         else:
             self.label = None
 
@@ -214,9 +220,8 @@ class TimeFieldAdjuster(Gtk.Frame):
 class Stopwatch:
     MODES = 4
     (TIME_DISPLAY, STOPWATCH, COUNTDOWN_A, COUNTDOWN_B) = list(range(0, MODES))
-    MODE_LABEL = ['Current Time', 'Stopwatch',
-                  'Countdown Timer A', 'Countdown Timer B']
-    ICON_DATA = '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    MODE_LABEL = ["Current Time", "Stopwatch", "Countdown Timer A", "Countdown Timer B"]
+    ICON_DATA = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 <svg
    xmlns:svg="http://www.w3.org/2000/svg"
@@ -255,7 +260,7 @@ class Stopwatch:
     </g>
   </g>
 </svg>
-'''
+"""
 
     def delete_event(self, widget, event, data=None):
         if self.close_to_tray:
@@ -271,8 +276,15 @@ class Stopwatch:
     def destroy(self, widget, data=None):
         Gtk.main_quit()
 
-    def __init__(self, name='pyStopwatch', display_font=Pango.font_description_from_string('DejaVu Sans Ultra-Light 36'),
-                 alarm_cmd='', alarm_txt='%t', mode=None, start_in_tray=False):
+    def __init__(
+        self,
+        name="pyStopwatch",
+        display_font=Pango.font_description_from_string("DejaVu Sans Ultra-Light 36"),
+        alarm_cmd="",
+        alarm_txt="%t",
+        mode=None,
+        start_in_tray=False,
+    ):
         self.name = name
         self.display_font = display_font
         self.alarm_cmd = alarm_cmd
@@ -292,12 +304,12 @@ class Stopwatch:
 
         config_dir = get_conf_dir(self.name)
         cache_dir = get_cache_dir(self.name)
-        self.conf = os.path.join(config_dir, self.name+'.conf')
-        self.icon = os.path.join(cache_dir, 'icon.svg')
+        self.conf = os.path.join(config_dir, self.name + ".conf")
+        self.icon = os.path.join(cache_dir, "icon.svg")
         if not os.path.exists(self.icon):
             if not os.path.isdir(cache_dir):
                 os.makedirs(cache_dir)
-            f = open(self.icon, 'w')
+            f = open(self.icon, "w")
             f.write(self.ICON_DATA)
             f.close()
 
@@ -317,13 +329,13 @@ class Stopwatch:
             self.secs.append(s)
 
         self.load_settings()
-        self.table_options = {'xpadding': 0, 'ypadding': 0}
+        self.table_options = {"xpadding": 0, "ypadding": 0}
 
         # main window
         self.window = Gtk.Window(Gtk.WindowType.TOPLEVEL)
         self.window.set_position(Gtk.WindowPosition.CENTER)
         self.window.set_title(self.name)
-        self.window.connect('key_press_event', self.handle_key)
+        self.window.connect("key_press_event", self.handle_key)
         self.window.connect("delete_event", self.delete_event)
         self.window.connect("destroy", self.destroy)
 
@@ -335,7 +347,7 @@ class Stopwatch:
         # eventbox to display the context menu in the GUI
         eventbox = Gtk.EventBox()
         eventbox.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        eventbox.connect('button-press-event', self.fake_context_menu)
+        eventbox.connect("button-press-event", self.fake_context_menu)
         eventbox.show()
 
         # display frame (the screen)
@@ -343,7 +355,7 @@ class Stopwatch:
         self.display_frame.set_label_align(1, 0.5)
         self.display_frame.show()
 
-        self.digit_display = Gtk.Label(label='00:00:00')
+        self.digit_display = Gtk.Label(label="00:00:00")
         self.digit_display.modify_font(self.display_font)
         self.display_frame.add(self.digit_display)
         self.digit_display.show()
@@ -352,21 +364,20 @@ class Stopwatch:
         self.adjust_box = Gtk.HBox()
         self.adjust_box.show()
 
-        self.hour = TimeFieldAdjuster(
-            interval=24, callback=self.set_hour, label='hour')
+        self.hour = TimeFieldAdjuster(interval=24, callback=self.set_hour, label="hour")
         self.adjust_box.add(self.hour)
         self.hour.show()
 
-        self.min = TimeFieldAdjuster(callback=self.set_min, label='min')
+        self.min = TimeFieldAdjuster(callback=self.set_min, label="min")
         self.adjust_box.add(self.min)
         self.min.show()
 
-        self.sec = TimeFieldAdjuster(callback=self.set_sec, label='sec')
+        self.sec = TimeFieldAdjuster(callback=self.set_sec, label="sec")
         self.adjust_box.add(self.sec)
         self.sec.show()
 
         # reset button (alone, for the sake of the layout)
-        self.reset_button = Gtk.Button(label='Reset')
+        self.reset_button = Gtk.Button(label="Reset")
         self.reset_button.connect("clicked", self.reset)
         self.reset_button.show()
 
@@ -374,24 +385,25 @@ class Stopwatch:
         self.control_box = Gtk.HBox()
         self.control_box.show()
 
-        self.mode_button = Gtk.Button(label='Mode')
+        self.mode_button = Gtk.Button(label="Mode")
         self.control_box.add(self.mode_button)
         self.mode_button.connect("clicked", self.toggle_mode)
         self.mode_button.show()
 
         self.run_button = ToggleStockImgButton(
-            off_icon=Gtk.STOCK_MEDIA_PLAY, on_icon=Gtk.STOCK_MEDIA_STOP, turn_on_cmd=self.start, turn_off_cmd=self.stop)
+            off_icon=Gtk.STOCK_MEDIA_PLAY,
+            on_icon=Gtk.STOCK_MEDIA_STOP,
+            turn_on_cmd=self.start,
+            turn_off_cmd=self.stop,
+        )
         self.control_box.add(self.run_button)
         self.run_button.show()
 
         eventbox.add(self.display_frame)
         self.container.attach(eventbox, 1, 2, 0, 1, **self.table_options)
-        self.container.attach(self.adjust_box, 0, 1, 0,
-                              1, **self.table_options)
-        self.container.attach(self.reset_button, 0, 1,
-                              1, 2, **self.table_options)
-        self.container.attach(self.control_box, 1, 2, 1,
-                              2, **self.table_options)
+        self.container.attach(self.adjust_box, 0, 1, 0, 1, **self.table_options)
+        self.container.attach(self.reset_button, 0, 1, 1, 2, **self.table_options)
+        self.container.attach(self.control_box, 1, 2, 1, 2, **self.table_options)
 
         self.window.show()
         (self.x, self.y) = self.window.get_position()
@@ -405,25 +417,25 @@ class Stopwatch:
         self.window.set_icon(pixbuf)
         self.statusicon = Gtk.StatusIcon.new_from_pixbuf(pixbuf)
         # self.statusicon=Gtk.status_icon_new_from_stock(Gtk.STOCK_MEDIA_PLAY)
-        self.statusicon.connect('activate', self.toggle_visibility)
-        self.statusicon.connect('popup-menu', self.context_menu)
-#    self.window.connect('focus-in-event', lambda *args: self.statusicon.set_blinking(False))
+        self.statusicon.connect("activate", self.toggle_visibility)
+        self.statusicon.connect("popup-menu", self.context_menu)
+        #    self.window.connect('focus-in-event', lambda *args: self.statusicon.set_blinking(False))
 
         self.menu = Gtk.Menu()
 
         self.prefs = Gtk.MenuItem("Preferences")
         self.menu.append(self.prefs)
-        self.prefs.connect('activate', self.open_preferences)
+        self.prefs.connect("activate", self.open_preferences)
         self.prefs.show()
 
         self.help = Gtk.MenuItem("Help")
         self.menu.append(self.help)
-        self.help.connect('activate', self.display_help)
+        self.help.connect("activate", self.display_help)
         self.help.show()
 
         self.quit = Gtk.MenuItem("Quit")
         self.menu.append(self.quit)
-        self.quit.connect('activate', self.destroy)
+        self.quit.connect("activate", self.destroy)
         self.quit.show()
 
         self.is_running[self.TIME_DISPLAY] = True
@@ -440,10 +452,9 @@ class Stopwatch:
         pw.set_border_width(10)
         pw.list = Gtk.VBox()
         pw.add(pw.list)
-        pw.set_title(self.name+" Preferences")
+        pw.set_title(self.name + " Preferences")
 
-        pw.cmd_label_box = Gtk.Alignment.new(
-            xalign=0.5, yalign=0.5, xscale=0, yscale=0)
+        pw.cmd_label_box = Gtk.Alignment.new(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         pw.list.add(pw.cmd_label_box)
         pw.cmd_label_box.show()
 
@@ -456,8 +467,7 @@ class Stopwatch:
         pw.cmd.set_text(self.alarm_cmd)
         pw.cmd.show()
 
-        pw.txt_label_box = Gtk.Alignment.new(
-            xalign=0.5, yalign=0.5, xscale=0, yscale=0)
+        pw.txt_label_box = Gtk.Alignment.new(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         pw.list.add(pw.txt_label_box)
         pw.txt_label_box.show()
 
@@ -471,7 +481,7 @@ class Stopwatch:
         pw.txt.show()
 
         pw.font_button = Gtk.Button(label=self.display_font.to_string())
-        pw.font_button.connect('clicked', self.select_font)
+        pw.font_button.connect("clicked", self.select_font)
         pw.list.add(pw.font_button)
         pw.font_button.show()
 
@@ -491,13 +501,13 @@ class Stopwatch:
         pw.list.add(pw.button_box)
         pw.button_box.show()
 
-        pw.appsave = Gtk.Button(label='apply and save')
-        pw.appsave.connect('clicked', self.appsave)
+        pw.appsave = Gtk.Button(label="apply and save")
+        pw.appsave.connect("clicked", self.appsave)
         pw.button_box.add(pw.appsave)
         pw.appsave.show()
 
-        pw.apply = Gtk.Button(label='apply only')
-        pw.apply.connect('clicked', self.apply)
+        pw.apply = Gtk.Button(label="apply only")
+        pw.apply.connect("clicked", self.apply)
         pw.button_box.add(pw.apply)
         pw.apply.show()
 
@@ -505,14 +515,16 @@ class Stopwatch:
 
         # font selection dialog
         self.fontseldiag = Gtk.FontSelectionDialog(
-            'Choose a font for the stopwatch digits.')
+            "Choose a font for the stopwatch digits."
+        )
         self.fontseldiag.connect("delete_event", self.hide)
         self.fontseldiag.set_font_name(self.display_font.to_string())
         self.fontseldiag.set_preview_text("0123456789")
-#    self.fontseldiag.apply_button.connect('clicked',self.set_font)
-#    self.fontseldiag.ok_button.connect('clicked',self.set_font_and_close)
-#    self.fontseldiag.cancel_button.connect('clicked',self.close_font_diag)
-#    self.fontseldiag.apply_button.show()
+
+    #    self.fontseldiag.apply_button.connect('clicked',self.set_font)
+    #    self.fontseldiag.ok_button.connect('clicked',self.set_font_and_close)
+    #    self.fontseldiag.cancel_button.connect('clicked',self.close_font_diag)
+    #    self.fontseldiag.apply_button.show()
 
     def toggle_visibility(self, *args):
         if self.window.get_property("visible"):
@@ -523,12 +535,13 @@ class Stopwatch:
             self.window.show()
 
     def context_menu(self, data, event_button, event_time, *args):
-        self.menu.popup(None, None, None, event_button,
-                        event_time, Gtk.get_current_event_time())
+        self.menu.popup(
+            None, None, None, event_button, event_time, Gtk.get_current_event_time()
+        )
 
     def fake_context_menu(self, widget, event):
         if event.button == 3:
-            self.statusicon.emit('popup-menu', 0, 0)
+            self.statusicon.emit("popup-menu", 0, 0)
 
     def open_preferences(self, *args):
         self.prefs_win.show()
@@ -548,23 +561,23 @@ class Stopwatch:
         conf_dir = os.path.dirname(self.conf)
         if not os.path.exists(conf_dir):
             os.makedirs(conf_dir)
-        f = open(self.conf, 'w')
+        f = open(self.conf, "w")
 
-        f.write(self.create_tag('display_font', self.display_font.to_string()))
-        f.write(self.create_tag('alarm_txt', self.alarm_txt))
-        f.write(self.create_tag('alarm_cmd', self.alarm_cmd))
+        f.write(self.create_tag("display_font", self.display_font.to_string()))
+        f.write(self.create_tag("alarm_txt", self.alarm_txt))
+        f.write(self.create_tag("alarm_cmd", self.alarm_cmd))
 
         if self.start_in_tray:
-            val = '1'
+            val = "1"
         else:
-            val = '0'
-        f.write(self.create_tag('start_in_tray', val))
+            val = "0"
+        f.write(self.create_tag("start_in_tray", val))
 
         if self.close_to_tray:
-            val = '1'
+            val = "1"
         else:
-            val = '0'
-        f.write(self.create_tag('close_to_tray', val))
+            val = "0"
+        f.write(self.create_tag("close_to_tray", val))
 
         f.close()
 
@@ -573,47 +586,46 @@ class Stopwatch:
 
     def parse_tag(self, text, tag):
         value = None
-        start = text.find('<'+tag+'>')+len(tag)+2
+        start = text.find("<" + tag + ">") + len(tag) + 2
         if start > 0:
-            end = text.find('</'+tag+'>')
+            end = text.find("</" + tag + ">")
             if end > start:
                 value = text[start:end]
         return value
 
     def load_settings(self, *args):
         if os.path.exists(self.conf):
-            f = open(self.conf, 'r')
+            f = open(self.conf, "r")
             text = f.read()
             f.close()
 
-            value = self.parse_tag(text, 'display_font')
+            value = self.parse_tag(text, "display_font")
             if value != None:
                 self.display_font = Pango.FontDescription(value)
 
-            value = self.parse_tag(text, 'alarm_cmd')
+            value = self.parse_tag(text, "alarm_cmd")
             if value != None:
                 self.alarm_cmd = value
 
-            value = self.parse_tag(text, 'alarm_txt')
+            value = self.parse_tag(text, "alarm_txt")
             if value != None:
                 self.alarm_txt = value
 
-            value = self.parse_tag(text, 'start_in_tray')
+            value = self.parse_tag(text, "start_in_tray")
             if value != None:
-                self.start_in_tray = (value == '1')
+                self.start_in_tray = value == "1"
 
-            value = self.parse_tag(text, 'close_to_tray')
+            value = self.parse_tag(text, "close_to_tray")
             if value != None:
-                self.close_to_tray = (value == '1')
+                self.close_to_tray = value == "1"
 
     def select_font(self, *args):
         self.fontseldiag.show()
 
     def set_font(self, *args):
-        self.display_font = Pango.FontDescription(
-            self.fontseldiag.get_font_name())
+        self.display_font = Pango.FontDescription(self.fontseldiag.get_font_name())
         self.digit_display.modify_font(self.display_font)
-        #self.prefs_win.font_label.set_text("Font: "+self.display_font.to_string())
+        # self.prefs_win.font_label.set_text("Font: "+self.display_font.to_string())
         self.prefs_win.font_button.set_label(self.display_font.to_string())
 
     def set_font_and_close(self, *args):
@@ -642,11 +654,23 @@ class Stopwatch:
 
         if self.mode == self.STOPWATCH:
             self.stopwatch_start = int(
-                time() - (self.hours[self.mode] * 3600 + self.mins[self.mode] * 60 + self.secs[self.mode]))
+                time()
+                - (
+                    self.hours[self.mode] * 3600
+                    + self.mins[self.mode] * 60
+                    + self.secs[self.mode]
+                )
+            )
 
         elif self.mode == self.COUNTDOWN_A:
             self.countdownA_end = int(
-                time() + (self.hours[self.mode] * 3600 + self.mins[self.mode] * 60 + self.secs[self.mode]))
+                time()
+                + (
+                    self.hours[self.mode] * 3600
+                    + self.mins[self.mode] * 60
+                    + self.secs[self.mode]
+                )
+            )
 
         else:
             time_array = localtime(time())
@@ -670,9 +694,9 @@ class Stopwatch:
 
             if self.mode == self.COUNTDOWN_B:
                 h = h % 24
-                self.countdownB_end = int(time() + h*3600 + m*60 + s)
+                self.countdownB_end = int(time() + h * 3600 + m * 60 + s)
             elif self.mode == self.TIME_DISPLAY:
-                self.timeshift = int(h*3600 + m*60 + s)
+                self.timeshift = int(h * 3600 + m * 60 + s)
 
         self.is_running[self.mode] = True
 
@@ -684,7 +708,7 @@ class Stopwatch:
             self.load_values()
         else:
             if self.mode == self.TIME_DISPLAY:
-                time_array = localtime(time()+self.timeshift)
+                time_array = localtime(time() + self.timeshift)
                 h = time_array[3]
                 m = time_array[4]
                 s = time_array[5]
@@ -726,7 +750,7 @@ class Stopwatch:
             if not self.run_button.is_on:
                 self.run_button.turn_on()
             if self.mode == self.TIME_DISPLAY:
-                time_array = localtime(time()+self.timeshift)
+                time_array = localtime(time() + self.timeshift)
                 h = time_array[3]
                 m = time_array[4]
                 s = time_array[5]
@@ -748,18 +772,18 @@ class Stopwatch:
         return True
 
     def update_display(self, **args):
-        if 'h' in args:
-            h = args['h']
+        if "h" in args:
+            h = args["h"]
         else:
             h = self.hours[self.mode]
 
-        if 'm' in args:
-            m = args['m']
+        if "m" in args:
+            m = args["m"]
         else:
             m = self.mins[self.mode]
 
-        if 's' in args:
-            s = args['s']
+        if "s" in args:
+            s = args["s"]
         else:
             s = self.secs[self.mode]
 
@@ -813,17 +837,19 @@ class Stopwatch:
             self.update_display()
 
     def get_time(self):
-        time_array = localtime(time()+self.timeshift)
+        time_array = localtime(time() + self.timeshift)
         h = time_array[3]
         m = time_array[4]
         s = time_array[5]
         return "%02d:%02d:%02d" % (h, m, s)
 
     def get_alarm_text(self):
-        if self.alarm_txt[:2] == '#!':
+        if self.alarm_txt[:2] == "#!":
             return subprocess.getoutput(self.alarm_txt[2:])
         else:
-            return '%%'.join([x.replace('%t', self.get_time()) for x in self.alarm_txt.split('%%')])
+            return "%%".join(
+                [x.replace("%t", self.get_time()) for x in self.alarm_txt.split("%%")]
+            )
 
     def alarm(self):
         #    self.statusicon.set_blinking(True)
@@ -845,7 +871,7 @@ class Stopwatch:
             os.system(self.alarm_cmd)
 
     def display_help(self, w):
-        help_text = subprocess.getoutput('man pystopwatch')
+        help_text = subprocess.getoutput("man pystopwatch")
 
         textview = Gtk.TextView()
         textview.get_buffer().set_text(help_text)
@@ -855,12 +881,12 @@ class Stopwatch:
         textview.set_right_margin(5)
 
         textview_window = Gtk.ScrolledWindow()
-        textview_window.set_policy(
-            Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        textview_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         textview_window.add(textview)
 
         dialog = Gtk.Dialog(
-            None, None, Gtk.DialogFlags.DESTROY_WITH_PARENT, ('close', 1))
+            None, None, Gtk.DialogFlags.DESTROY_WITH_PARENT, ("close", 1)
+        )
         dialog.set_default_size(600, 500)
         dialog.vbox.pack_start(textview_window, True, True, 5)
         dialog.vbox.show_all()
@@ -880,7 +906,7 @@ class Stopwatch:
             self.run_button.toggle()
 
     def toggle_mode(self, *args):
-        self.mode = (self.mode+1) % self.MODES
+        self.mode = (self.mode + 1) % self.MODES
         self.set_mode()
 
     def show(self, whatever=None):
@@ -898,10 +924,10 @@ class Stopwatch:
         handlers = {
             Gdk.KEY_space: self.toggle,
             Gdk.KEY_r: self.reset,
-            Gdk.KEY_Tab: self.toggle_mode
+            Gdk.KEY_Tab: self.toggle_mode,
         }
         # h,H,m,M,s,S to adjust hours, minutes and seconds.
-        for field in ('hour', 'min', 'sec'):
+        for field in ("hour", "min", "sec"):
             tfa = getattr(self, field)
             c = field[0]
             k = getattr(Gtk.keysyms, c)
