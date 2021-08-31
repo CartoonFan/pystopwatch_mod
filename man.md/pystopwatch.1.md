@@ -59,4 +59,4 @@ Always add an ampersand ("&") to the end of your alarm command to background the
 :   display some_img.jpg
 
 `/path/to/some/script &`
-:   run a script or other command
+:   run a script or other command 
