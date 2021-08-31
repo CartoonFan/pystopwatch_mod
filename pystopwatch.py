@@ -19,15 +19,10 @@ import re
 import subprocess
 import sys
 from string import capwords
-from time import localtime
-from time import time
+from time import localtime, time
 
 import gi
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
 
 gi.require_version("Gtk", "3.0")
 # from gtk import EXPAND,FILL,STOCK_GO_UP,STOCK_GO_DOWN
