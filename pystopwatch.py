@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-
-
 # Copyright (C) 2008-2019  Xyne
 #
 # This program is free software; you can redistribute it and/or
@@ -16,16 +14,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
 import os
 import re
 import subprocess
 import sys
 from string import capwords
-from time import localtime, time
+from time import localtime
+from time import time
 
 import gi
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
+from gi.repository import GObject
+from gi.repository import Gtk
+from gi.repository import Pango
 
 gi.require_version("Gtk", "3.0")
 # from gtk import EXPAND,FILL,STOCK_GO_UP,STOCK_GO_DOWN
