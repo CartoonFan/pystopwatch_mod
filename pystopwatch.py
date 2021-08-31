@@ -176,7 +176,7 @@ class TimeFieldAdjuster(Gtk.Frame):
         GObject.timeout_add(self.start_delay, self.hold_inc)
 
     def hold_inc(self, *args):
-        if self.increasing == True:
+        if self.increasing is True:
             GObject.timeout_add(self.repeat_delay, self.increase)
 
     def press_dec(self, *args):
@@ -186,7 +186,7 @@ class TimeFieldAdjuster(Gtk.Frame):
         GObject.timeout_add(self.start_delay, self.hold_dec)
 
     def hold_dec(self, *args):
-        if self.decreasing == True:
+        if self.decreasing is True:
             GObject.timeout_add(self.repeat_delay, self.decrease)
 
     def release(self, *args):
