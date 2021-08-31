@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=pyStopwatch
+Comment=A stopwatch written in Python with a clock and two countdown functions that can minimize to the tray.
+Exec=pystopwatch
+Type=Application
+Categories=Utility;
