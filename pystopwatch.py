@@ -17,15 +17,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from gi.repository import Gtk, Pango, GObject, Gdk, GdkPixbuf
-from time import time, localtime
-import subprocess
 import os
-import sys
 import re
+import subprocess
+import sys
 from string import capwords
+from time import localtime, time
 
 import gi
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
 
 gi.require_version("Gtk", "3.0")
 # from gtk import EXPAND,FILL,STOCK_GO_UP,STOCK_GO_DOWN
