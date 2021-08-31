@@ -310,7 +310,7 @@ class Stopwatch:
         self.hours = []
         self.mins = []
         self.secs = []
-        for i in range(0, self.MODES):
+        for i in range(self.MODES):
             self.is_running.append(False)
             if i == self.COUNTDOWN_B:
                 h, m, s = self.get_default_countdown_b()
