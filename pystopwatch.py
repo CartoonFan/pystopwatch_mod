@@ -141,7 +141,7 @@ class TimeFieldAdjuster(Gtk.Frame):
         GObject.GObject.__init__(self, **args)
         self.set_shadow_type(Gtk.ShadowType.NONE)
         self.set_label_align(1, 0.5)
-        if self.label != None:
+        if self.label is not None:
             self.set_label(self.label)
 
         self.holder = Gtk.VBox()
@@ -204,7 +204,7 @@ class TimeFieldAdjuster(Gtk.Frame):
     def set_value(self, val):
         if val != self.value:
             self.value = val % self.interval
-            if self.callback != None:
+            if self.callback is not None:
                 self.callback(self.value)
 
 
@@ -603,23 +603,23 @@ class Stopwatch:
             f.close()
 
             value = self.parse_tag(text, "display_font")
-            if value != None:
+            if value is not None:
                 self.display_font = Pango.FontDescription(value)
 
             value = self.parse_tag(text, "alarm_cmd")
-            if value != None:
+            if value is not None:
                 self.alarm_cmd = value
 
             value = self.parse_tag(text, "alarm_txt")
-            if value != None:
+            if value is not None:
                 self.alarm_txt = value
 
             value = self.parse_tag(text, "start_in_tray")
-            if value != None:
+            if value is not None:
                 self.start_in_tray = value == "1"
 
             value = self.parse_tag(text, "close_to_tray")
-            if value != None:
+            if value is not None:
                 self.close_to_tray = value == "1"
 
     def select_font(self, *args):
@@ -891,8 +891,7 @@ class Stopwatch:
     def set_mode(self, mode=None):
         if mode == None:
             mode = self.mode
-        elif mode != self.mode:
-            if 0 <= mode < self.MODES:
+        elif mode != self.mode and 0 <= mode < self.MODES:
                 self.mode = mode
         self.set_values()
         self.display_frame.set_label(self.MODE_LABEL[self.mode])
