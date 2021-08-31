@@ -303,10 +303,8 @@ class Stopwatch:
         if not os.path.exists(self.icon):
             if not os.path.isdir(cache_dir):
                 os.makedirs(cache_dir)
-            f = open(self.icon, "w")
-            f.write(self.ICON_DATA)
-            f.close()
-
+            with open(self.icon, "w") as f:
+                f.write(self.ICON_DATA)
         self.close_to_tray = False
         self.is_running = []
         self.hours = []
