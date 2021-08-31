@@ -892,7 +892,7 @@ class Stopwatch:
         if mode == None:
             mode = self.mode
         elif mode != self.mode and 0 <= mode < self.MODES:
-                self.mode = mode
+            self.mode = mode
         self.set_values()
         self.display_frame.set_label(self.MODE_LABEL[self.mode])
         self.update_display()
