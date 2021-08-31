@@ -40,7 +40,9 @@ def get_conf_dir(name):
         fpath = os.path.join(os.getenv("HOME"), ".config")
         sys.stderr.write(
             'error: the environment variable "XDG_CONFIG_HOME" is not set\nDefaulting to '
-            + fpath + "\n")
+            + fpath
+            + "\n"
+        )
     return os.path.join(fpath, name)
 
 
@@ -50,17 +52,16 @@ def get_cache_dir(name):
         fpath = os.path.join(os.getenv("HOME"), ".cache")
         sys.stderr.write(
             'error: the environment variable "XDG_CACHE_HOME" is not set\nDefaulting to '
-            + fpath + "\n")
+            + fpath
+            + "\n"
+        )
     return os.path.join(fpath, name)
 
 
 class StockImgButton(Gtk.Button):
     def __init__(self, **args):
         GObject.GObject.__init__(self)
-        self.alignment = Gtk.Alignment.new(xalign=0.5,
-                                           yalign=0.5,
-                                           xscale=0,
-                                           yscale=0)
+        self.alignment = Gtk.Alignment.new(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         self.img = Gtk.Image()
         self.img.set_from_stock(args["icon"], Gtk.IconSize.MENU)
 
@@ -79,10 +80,8 @@ class ToggleStockImgButton(StockImgButton):
         self.off_icon = args["off_icon"]
 
         self.is_on = "on" in args
-        self.turn_on_cmd = args[
-            "turn_on_cmd"] if "turn_on_cmd" in args else None
-        self.turn_off_cmd = args[
-            "turn_off_cmd"] if "turn_off_cmd" in args else None
+        self.turn_on_cmd = args["turn_on_cmd"] if "turn_on_cmd" in args else None
+        self.turn_off_cmd = args["turn_off_cmd"] if "turn_off_cmd" in args else None
         if self.is_on:
             StockImgButton.__init__(self, icon=self.on_icon)
             self.cmd_id = self.connect("clicked", self.turn_off_cmd)
@@ -211,9 +210,7 @@ class TimeFieldAdjuster(Gtk.Frame):
 class Stopwatch:
     MODES = 4
     (TIME_DISPLAY, STOPWATCH, COUNTDOWN_A, COUNTDOWN_B) = list(range(0, MODES))
-    MODE_LABEL = [
-        "Current Time", "Stopwatch", "Countdown Timer A", "Countdown Timer B"
-    ]
+    MODE_LABEL = ["Current Time", "Stopwatch", "Countdown Timer A", "Countdown Timer B"]
     ICON_DATA = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 <svg
@@ -272,8 +269,7 @@ class Stopwatch:
     def __init__(
         self,
         name="pyStopwatch",
-        display_font=Pango.font_description_from_string(
-            "DejaVu Sans Ultra-Light 36"),
+        display_font=Pango.font_description_from_string("DejaVu Sans Ultra-Light 36"),
         alarm_cmd="",
         alarm_txt="%t",
         mode=None,
@@ -358,9 +354,7 @@ class Stopwatch:
         self.adjust_box = Gtk.HBox()
         self.adjust_box.show()
 
-        self.hour = TimeFieldAdjuster(interval=24,
-                                      callback=self.set_hour,
-                                      label="hour")
+        self.hour = TimeFieldAdjuster(interval=24, callback=self.set_hour, label="hour")
         self.adjust_box.add(self.hour)
         self.hour.show()
 
@@ -397,12 +391,9 @@ class Stopwatch:
 
         eventbox.add(self.display_frame)
         self.container.attach(eventbox, 1, 2, 0, 1, **self.table_options)
-        self.container.attach(self.adjust_box, 0, 1, 0, 1,
-                              **self.table_options)
-        self.container.attach(self.reset_button, 0, 1, 1, 2,
-                              **self.table_options)
-        self.container.attach(self.control_box, 1, 2, 1, 2,
-                              **self.table_options)
+        self.container.attach(self.adjust_box, 0, 1, 0, 1, **self.table_options)
+        self.container.attach(self.reset_button, 0, 1, 1, 2, **self.table_options)
+        self.container.attach(self.control_box, 1, 2, 1, 2, **self.table_options)
 
         self.window.show()
         (self.x, self.y) = self.window.get_position()
@@ -453,10 +444,7 @@ class Stopwatch:
         pw.add(pw.list)
         pw.set_title(self.name + " Preferences")
 
-        pw.cmd_label_box = Gtk.Alignment.new(xalign=0.5,
-                                             yalign=0.5,
-                                             xscale=0,
-                                             yscale=0)
+        pw.cmd_label_box = Gtk.Alignment.new(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         pw.list.add(pw.cmd_label_box)
         pw.cmd_label_box.show()
 
@@ -469,10 +457,7 @@ class Stopwatch:
         pw.cmd.set_text(self.alarm_cmd)
         pw.cmd.show()
 
-        pw.txt_label_box = Gtk.Alignment.new(xalign=0.5,
-                                             yalign=0.5,
-                                             xscale=0,
-                                             yscale=0)
+        pw.txt_label_box = Gtk.Alignment.new(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         pw.list.add(pw.txt_label_box)
         pw.txt_label_box.show()
 
@@ -520,7 +505,8 @@ class Stopwatch:
 
         # font selection dialog
         self.fontseldiag = Gtk.FontSelectionDialog(
-            "Choose a font for the stopwatch digits.")
+            "Choose a font for the stopwatch digits."
+        )
         self.fontseldiag.connect("delete_event", self.hide)
         self.fontseldiag.set_font_name(self.display_font.to_string())
         self.fontseldiag.set_preview_text("0123456789")
@@ -539,8 +525,9 @@ class Stopwatch:
             self.window.show()
 
     def context_menu(self, data, event_button, event_time, *args):
-        self.menu.popup(None, None, None, event_button, event_time,
-                        Gtk.get_current_event_time())
+        self.menu.popup(
+            None, None, None, event_button, event_time, Gtk.get_current_event_time()
+        )
 
     def fake_context_menu(self, widget, event):
         if event.button == 3:
@@ -626,8 +613,7 @@ class Stopwatch:
         self.fontseldiag.show()
 
     def set_font(self, *args):
-        self.display_font = Pango.FontDescription(
-            self.fontseldiag.get_font_name())
+        self.display_font = Pango.FontDescription(self.fontseldiag.get_font_name())
         self.digit_display.modify_font(self.display_font)
         # self.prefs_win.font_label.set_text("Font: "+self.display_font.to_string())
         self.prefs_win.font_button.set_label(self.display_font.to_string())
@@ -657,14 +643,24 @@ class Stopwatch:
         self.run_button.turn_on()
 
         if self.mode == self.STOPWATCH:
-            self.stopwatch_start = int(time() - (self.hours[self.mode] * 3600 +
-                                                 self.mins[self.mode] * 60 +
-                                                 self.secs[self.mode]))
+            self.stopwatch_start = int(
+                time()
+                - (
+                    self.hours[self.mode] * 3600
+                    + self.mins[self.mode] * 60
+                    + self.secs[self.mode]
+                )
+            )
 
         elif self.mode == self.COUNTDOWN_A:
-            self.countdownA_end = int(time() + (self.hours[self.mode] * 3600 +
-                                                self.mins[self.mode] * 60 +
-                                                self.secs[self.mode]))
+            self.countdownA_end = int(
+                time()
+                + (
+                    self.hours[self.mode] * 3600
+                    + self.mins[self.mode] * 60
+                    + self.secs[self.mode]
+                )
+            )
 
         else:
             time_array = localtime(time())
@@ -841,10 +837,9 @@ class Stopwatch:
         if self.alarm_txt[:2] == "#!":
             return subprocess.getoutput(self.alarm_txt[2:])
         else:
-            return "%%".join([
-                x.replace("%t", self.get_time())
-                for x in self.alarm_txt.split("%%")
-            ])
+            return "%%".join(
+                [x.replace("%t", self.get_time()) for x in self.alarm_txt.split("%%")]
+            )
 
     def alarm(self):
         #    self.statusicon.set_blinking(True)
@@ -876,12 +871,12 @@ class Stopwatch:
         textview.set_right_margin(5)
 
         textview_window = Gtk.ScrolledWindow()
-        textview_window.set_policy(Gtk.PolicyType.AUTOMATIC,
-                                   Gtk.PolicyType.AUTOMATIC)
+        textview_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         textview_window.add(textview)
 
-        dialog = Gtk.Dialog(None, None, Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                            ("close", 1))
+        dialog = Gtk.Dialog(
+            None, None, Gtk.DialogFlags.DESTROY_WITH_PARENT, ("close", 1)
+        )
         dialog.set_default_size(600, 500)
         dialog.vbox.pack_start(textview_window, True, True, 5)
         dialog.vbox.show_all()
