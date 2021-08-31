@@ -79,8 +79,10 @@ class ToggleStockImgButton(StockImgButton):
         self.off_icon = args["off_icon"]
 
         self.is_on = "on" in args
-        self.turn_on_cmd = args["turn_on_cmd"] if "turn_on_cmd" in args else None
-        self.turn_off_cmd = args["turn_off_cmd"] if "turn_off_cmd" in args else None
+        self.turn_on_cmd = args[
+            "turn_on_cmd"] if "turn_on_cmd" in args else None
+        self.turn_off_cmd = args[
+            "turn_off_cmd"] if "turn_off_cmd" in args else None
         if self.is_on:
             StockImgButton.__init__(self, icon=self.on_icon)
             self.cmd_id = self.connect("clicked", self.turn_off_cmd)
